@@ -1,7 +1,6 @@
-// pages/index.tsx
-
 import React, { useState } from "react";
 import { ethers } from "ethers"; // Import ethers.js for Ethereum interactions
+import { FaCopy } from "react-icons/fa"; // Import the copy icon from react-icons
 import MyToken from "./MyToken.json"; // Import your contract ABI and bytecode JSON
 
 interface TokenDisplayStates {
@@ -55,7 +54,6 @@ const MainPage: React.FC = () => {
         setDeployStatus("Failed to deploy. Transaction receipt not available.");
         setContractAddress(null);
       }
-
     } catch (error) {
       console.error("Error deploying contract:", error);
       setDeployStatus("Failed to deploy. Check console for details.");
@@ -63,24 +61,26 @@ const MainPage: React.FC = () => {
     }
   };
 
+  const handleCopy = () => {
+    if (contractAddress) {
+      navigator.clipboard.writeText(contractAddress);
+      alert("Contract address copied to clipboard!");
+    }
+  };
+
   return (
     <div className="bg-gray-950 min-h-screen text-white">
       <div className="flex justify-center items-center py-12 flex-wrap md:gap-4 gap-2">
         <div
-          onClick={() => setPageState("1")}
-          className={`md:text-xl text-xs border border-white px-6 py-3 rounded-3xl cursor-pointer ${
-            pageState === "1" ? "bg-gray-700" : ""
-          }`}
+          className={`md:text-xl text-xs border border-white px-6 py-3 rounded-3xl cursor-pointer ${pageState === "1" ? "bg-blue-700" : ""}`}
+         
         >
           Token Display
         </div>
         <div className="border-white border md:w-44 w-16 block"></div>
-
         <div
-          onClick={() => setPageState("2")}
-          className={`md:text-xl text-xs border border-white px-6 py-3 rounded-3xl cursor-pointer ${
-            pageState === "2" ? "bg-gray-700" : ""
-          }`}
+          className={`md:text-xl text-xs border border-white px-6 py-3 rounded-3xl cursor-pointer ${pageState === "2" ? "bg-blue-700" : ""}`}
+          
         >
           Multisender
         </div>
@@ -89,10 +89,7 @@ const MainPage: React.FC = () => {
       {/* Token Display */}
       {pageState === "1" && (
         <div className="flex justify-center items-center mt-8 w-full px-4">
-          <form
-            onSubmit={handleTokenDisplay}
-            className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg"
-          >
+          <form onSubmit={handleTokenDisplay} className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
             <input
               type="text"
               className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
@@ -132,10 +129,7 @@ const MainPage: React.FC = () => {
               }}
               required
             />
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded focus:outline-none focus:shadow-outline"
-            >
+            <button type="submit" className="w-full py-2 px-4 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded focus:outline-none focus:shadow-outline">
               Display Token
             </button>
             {/* Deployment Status */}
@@ -143,7 +137,12 @@ const MainPage: React.FC = () => {
               <div className="mt-4 p-4 bg-gray-700 rounded-lg text-center">
                 <p>{deployStatus}</p>
                 {contractAddress && (
-                  <p className="mt-2">Contract deployed at: {contractAddress}</p>
+                  <div className="flex justify-center items-center gap-2 mt-2">
+                    <p className="overflow-hidden">
+                      Contract deployed at: {contractAddress.slice(0, 30) + "..."}
+                    </p>
+                    <FaCopy className="cursor-pointer" size={20} onClick={handleCopy} />
+                  </div>
                 )}
               </div>
             )}
@@ -154,9 +153,7 @@ const MainPage: React.FC = () => {
       {/* Multisender */}
       {pageState === "2" && (
         <div className="flex justify-center items-center mt-8 w-full px-4">
-          <form
-            className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-6 items-center"
-          >
+          <form className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-6 items-center">
             <input
               type="text"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
@@ -192,10 +189,7 @@ const MainPage: React.FC = () => {
               placeholder={`Enter in "address, amount" format`}
               required
             ></textarea>
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded focus:outline-none focus:shadow-outline"
-            >
+            <button type="submit" className="w-full py-2 px-4 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded focus:outline-none focus:shadow-outline">
               Send
             </button>
           </form>
