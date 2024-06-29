@@ -9,18 +9,11 @@ interface TokenDisplayStates {
   supply?: number;
 }
 
-interface MultisenderStates {
-  contractAddress?: string;
-  noOfUsers?: number;
-  addressesAmounts?: string;
-}
 
 const MainPage: React.FC = () => {
   const [tokenDisplayStates, setTokenDisplayStates] = useState<TokenDisplayStates>({});
-  const [multisenderStates, setMultisenderStates] = useState<MultisenderStates>({});
   const [deployStatus, setDeployStatus] = useState<string | null>(null);
   const [contractAddress, setContractAddress] = useState<string | null>(null);
-  const [pageState, setPageState] = useState<"1" | "2">("1"); // State for managing different sections
 
   const handleTokenDisplay = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,22 +65,14 @@ const MainPage: React.FC = () => {
     <div className="bg-gray-950 min-h-screen text-white">
       <div className="flex justify-center items-center py-12 flex-wrap md:gap-4 gap-2">
         <div
-          className={`md:text-xl text-xs border border-white px-6 py-3 rounded-3xl cursor-pointer ${pageState === "1" ? "bg-blue-700" : ""}`}
+          className={`md:text-xl text-xs border border-white px-6 py-3 rounded-3xl cursor-pointer bg-blue-700`}
          
         >
           Token Display
-        </div>
-        <div className="border-white border md:w-44 w-16 block"></div>
-        <div
-          className={`md:text-xl text-xs border border-white px-6 py-3 rounded-3xl cursor-pointer ${pageState === "2" ? "bg-blue-700" : ""}`}
-          
-        >
-          Multisender
-        </div>
+        </div>        
       </div>
 
       {/* Token Display */}
-      {pageState === "1" && (
         <div className="flex justify-center items-center mt-8 w-full px-4">
           <form onSubmit={handleTokenDisplay} className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
             <input
@@ -148,53 +133,9 @@ const MainPage: React.FC = () => {
             )}
           </form>
         </div>
-      )}
+     
 
-      {/* Multisender */}
-      {pageState === "2" && (
-        <div className="flex justify-center items-center mt-8 w-full px-4">
-          <form className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-6 items-center">
-            <input
-              type="text"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Token's Or NFT's contract address"
-              onChange={(e) => {
-                setMultisenderStates({
-                  ...multisenderStates,
-                  contractAddress: e.target.value,
-                });
-              }}
-              required
-            />
-            <input
-              type="number"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="No of users to send"
-              onChange={(e) => {
-                setMultisenderStates({
-                  ...multisenderStates,
-                  noOfUsers: parseInt(e.target.value),
-                });
-              }}
-              required
-            />
-            <textarea
-              onChange={(e) => {
-                setMultisenderStates({
-                  ...multisenderStates,
-                  addressesAmounts: e.target.value,
-                });
-              }}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder={`Enter in "address, amount" format`}
-              required
-            ></textarea>
-            <button type="submit" className="w-full py-2 px-4 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded focus:outline-none focus:shadow-outline">
-              Send
-            </button>
-          </form>
-        </div>
-      )}
+      
     </div>
   );
 };
