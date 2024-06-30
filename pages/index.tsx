@@ -13,7 +13,9 @@ export default function Home() {
 
   return (
     <div id="root" className="bg-gray-950 min-h-screen text-white">
-      <ConnectButton />
+     <div className=" flex justify-end p-2">
+     <ConnectButton />
+     </div>
       <MainPage />
     </div>
   );
