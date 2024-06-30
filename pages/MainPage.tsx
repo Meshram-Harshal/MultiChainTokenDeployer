@@ -65,15 +65,15 @@ const MainPage: React.FC = () => {
     <div className="bg-gray-950 min-h-screen text-white">
       <div className="flex justify-center items-center py-12 flex-wrap md:gap-4 gap-2">
         <div
-          className={`md:text-xl text-xs border border-white px-6 py-3 rounded-3xl cursor-pointer bg-blue-700`}
+          className={`md:text-xl text-lg border border-white px-8 py-3 rounded-3xl cursor-pointer bg-blue-700`}
          
         >
-          Token Display
+          Token Deploy
         </div>        
       </div>
 
       {/* Token Display */}
-        <div className="flex justify-center items-center mt-8 w-full px-4">
+        <div className="flex justify-center items-center md:mt-8 mt-3 w-full px-4">
           <form onSubmit={handleTokenDisplay} className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
             <input
               type="text"
@@ -115,7 +115,7 @@ const MainPage: React.FC = () => {
               required
             />
             <button type="submit" className="w-full py-2 px-4 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded focus:outline-none focus:shadow-outline">
-              Display Token
+            Deploy Token
             </button>
             {/* Deployment Status */}
             {deployStatus && (
