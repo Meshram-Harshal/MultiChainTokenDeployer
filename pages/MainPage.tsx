@@ -65,6 +65,7 @@ const MainPage: React.FC = () => {
         setToggleCopied(e => !e)
       }, 1000)
     }
+    
   };
 
   return (
