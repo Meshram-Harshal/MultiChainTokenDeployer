@@ -15,6 +15,8 @@ const MainPage: React.FC = () => {
   const [deployStatus, setDeployStatus] = useState<string | null>(null);
   const [contractAddress, setContractAddress] = useState<string | null>(null);
 
+  const [toggleCopied, setToggleCopied] = useState<Boolean | null>(false)
+
   const handleTokenDisplay = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -54,10 +56,14 @@ const MainPage: React.FC = () => {
     }
   };
 
+
   const handleCopy = () => {
     if (contractAddress) {
       navigator.clipboard.writeText(contractAddress);
-      alert("Contract address copied to clipboard!");
+      setToggleCopied(e => !e)
+      setTimeout(() => {
+        setToggleCopied(e => !e)
+      }, 1000)
     }
   };
 
@@ -66,76 +72,87 @@ const MainPage: React.FC = () => {
       <div className="flex justify-center items-center py-12 flex-wrap md:gap-4 gap-2">
         <div
           className={`md:text-xl text-lg border border-white px-8 py-3 rounded-3xl cursor-pointer bg-blue-700`}
-         
+
         >
           Token Deploy
-        </div>        
+        </div>
       </div>
 
       {/* Token Display */}
-        <div className="flex justify-center items-center md:mt-8 mt-3 w-full px-4">
-          <form onSubmit={handleTokenDisplay} className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
-            <input
-              type="text"
-              className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Token Ticker"
-              value={tokenDisplayStates.tokenTicker || ""}
-              onChange={(e) => {
-                setTokenDisplayStates({
-                  ...tokenDisplayStates,
-                  tokenTicker: e.target.value.toLocaleUpperCase(),
-                });
-              }}
-              required
-            />
-            <input
-              type="text"
-              className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Token Name"
-              value={tokenDisplayStates.tokenName || ""}
-              onChange={(e) => {
-                setTokenDisplayStates({
-                  ...tokenDisplayStates,
-                  tokenName: e.target.value,
-                });
-              }}
-              required
-            />
-            <input
-              type="number"
-              className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Supply"
-              value={tokenDisplayStates.supply || ""}
-              onChange={(e) => {
-                setTokenDisplayStates({
-                  ...tokenDisplayStates,
-                  supply: parseInt(e.target.value),
-                });
-              }}
-              required
-            />
-            <button type="submit" className="w-full py-2 px-4 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded focus:outline-none focus:shadow-outline">
+      <div className="flex justify-center items-center md:mt-8 mt-3 w-full px-4">
+        <form onSubmit={handleTokenDisplay} className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
+          <input
+            type="text"
+            className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Token Ticker"
+            value={tokenDisplayStates.tokenTicker || ""}
+            onChange={(e) => {
+              setTokenDisplayStates({
+                ...tokenDisplayStates,
+                tokenTicker: e.target.value.toLocaleUpperCase(),
+              });
+            }}
+            required
+          />
+          <input
+            type="text"
+            className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Token Name"
+            value={tokenDisplayStates.tokenName || ""}
+            onChange={(e) => {
+              setTokenDisplayStates({
+                ...tokenDisplayStates,
+                tokenName: e.target.value,
+              });
+            }}
+            required
+          />
+          <input
+            type="number"
+            className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Supply"
+            value={tokenDisplayStates.supply || ""}
+            onChange={(e) => {
+              setTokenDisplayStates({
+                ...tokenDisplayStates,
+                supply: parseInt(e.target.value),
+              });
+            }}
+            required
+          />
+          <button type="submit" className="w-full py-2 px-4 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded focus:outline-none focus:shadow-outline">
             Deploy Token
-            </button>
-            {/* Deployment Status */}
-            {deployStatus && (
-              <div className="mt-4 p-4 bg-gray-700 rounded-lg text-center">
-                <p>{deployStatus}</p>
-                {contractAddress && (
+          </button>
+          {/* Deployment Status */}
+          {deployStatus && (
+            <div className="mt-4 p-4 bg-gray-700 rounded-lg text-center">
+              <p>{deployStatus}</p>
+              {contractAddress && (
+                <>
+
                   <div className="flex justify-center items-center gap-2 mt-2">
                     <p className="overflow-hidden">
                       Contract deployed at: {contractAddress.slice(0, 30) + "..."}
                     </p>
                     <FaCopy className="cursor-pointer" size={20} onClick={handleCopy} />
                   </div>
-                )}
-              </div>
-            )}
-          </form>
-        </div>
-     
 
-      
+                  <div>
+                    {
+                      toggleCopied && <p className="text-green-500">Copied to clipboard</p>
+                    }
+                  </div>
+
+                </>
+              )}
+
+            </div>
+          )}
+        </form>
+      </div>
+
+
+
     </div>
   );
 };
